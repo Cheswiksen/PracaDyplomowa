@@ -7,7 +7,7 @@ from django.contrib.auth import login, logout
 from django.views.generic.base import View
 from .models import Car, Service, Fueling
 from django.contrib.auth.models import User
-
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # from main_app.tasks import add
 
@@ -64,6 +64,7 @@ def ServiceView(request, Service_id):
     }
     return render(request, "Site/service.html", context)
 
+
 def FuelView(request, Fuel_id):
     try:
         fuel = Fueling.objects.get(pk=Fuel_id)
@@ -77,8 +78,35 @@ def FuelView(request, Fuel_id):
 
 def car(request):
         context = {
-            "Services": Service.objects.all()
+            "Services": Service.objects.all(),
+            "Cars": Car.objects.all(),
         }
         return render(request, 'Site/car.html', context)
 
 
+class CarEntry(CreateView):
+    model = Car
+    success_url = "/"
+    template_name = "Site/add_car.html"
+    fields = [
+        'mark_text',
+        'model_text',
+        'services',
+    ]
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(CarEntry, self).form_valid(form)
+
+
+class ServiceEntry(CreateView):
+    model = Service
+    success_url = "/"
+    template_name = "Site/add_service.html"
+    fields = [
+        'mileage_number',
+        'cash_float',
+        'note_text',
+        'title_text',
+        'created_date',
+    ]
