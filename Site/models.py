@@ -34,3 +34,4 @@ class Car(models.Model):
 
     def __str__(self):
         return f"{self.mark_text} {self.model_text}"
+
