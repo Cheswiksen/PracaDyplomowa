@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class Service(models.Model):
     mileage_number = models.DecimalField(max_digits=8, decimal_places=0)
     cash_float = models.DecimalField(max_digits=6, decimal_places=2)
-    note_text = models.CharField(max_length=256, null=True)
+    note_text = models.CharField(max_length=256, blank=True, null=True)
     title_text = models.CharField(max_length=32)
     created_date = models.DateField(default=timezone.now)
 

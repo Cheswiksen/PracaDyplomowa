@@ -25,13 +25,15 @@ SECRET_KEY = 'k!o*)0^ek0!wdda^+yj)$5=zx4de^6^b0^x0w=c$7=*a=$jh_9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'bootstrap4',
+    'bootstrap_datepicker_plus',
+    'crispy_forms',
     'Site.apps.SiteConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -102,6 +104,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
@@ -124,5 +129,5 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/'
 
-
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

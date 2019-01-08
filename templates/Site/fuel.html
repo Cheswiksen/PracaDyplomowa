@@ -18,9 +18,6 @@
     <h2>Koszt: {{ Fuel.cash_float }} zł</h2>
     <h2>{{ Fuel.liters_float }} litrów</h2>
     <h2>Data: {{ Fuel.created_date }}</h2>
-    <form action="{% url 'delete_fueling' %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" value="Confirm" class="btn btn-default btn-sm">delete fueling</button>
-    </form>
+    <a href="{% url 'delete_fueling' Car.id Fuel.id %}" style="width: 200px;" class="btn btn-primary active mx-auto" role="button" aria-pressed="true">Usuń tankowanie</a>
     </body>
     </html>

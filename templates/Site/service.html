@@ -20,6 +20,7 @@
     <h2>Przy przebiegu: {{ Service.mileage_number }} km</h2>
     <h2>Koszt: {{ Service.cash_float }} zł</h2>
     <h2>Data: {{ Service.created_date }}</h2>
+    <a href="{% url 'delete_service' Car.id Service.id %}" style="width: 200px;" class="btn btn-primary active mx-auto" role="button" aria-pressed="true">Usuń serwis</a>
 
 
     </body>

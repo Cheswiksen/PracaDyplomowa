@@ -1,0 +1,28 @@
+<DOCTYPE html>
+    <html lang="en">
+    <head>
+        {# Load the tag library #}
+        {% load bootstrap4 %}
+
+        {# Load CSS and JavaScript #}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+
+        {# Display django.contrib.messages as Bootstrap alerts #}
+                        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="B.C">{% bootstrap_messages %}
+
+    </head>
+    <body>
+    Raport przygotowany dla samochodu: {{ car }}
+    <br>
+    suma wydatków: {{ suma }}
+    <br>
+    suma wyfdatków na paliwo: {{ tankowania }}
+    <br>
+    suma wydatków na serwisy: {{ serwisy }}
+
+
+    </body>

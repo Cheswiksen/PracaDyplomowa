@@ -1,6 +1,7 @@
 <DOCTYPE html>
     <html lang="en">
     <head>
+
         {# Load the tag library #}
         {% load bootstrap4 %}
 
@@ -10,9 +11,34 @@
 
         {# Display django.contrib.messages as Bootstrap alerts #}
         {% bootstrap_messages %}
+
+                <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="B.C">
+        <style>
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+.bg {
+  /* The image used */
+  background-image: url("https://images.wallpaperscraft.com/image/highway_cars_city_traffic_buildings_black_white_25566_1920x1080.jpg");
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</style>
     </head>
 
-    <body>
+    <body class="bg">
+
     {% if user.is_authenticated %}
         <div class="jumbotron mx-auto" style="max-width: 700px">
         <h1 class="display-4">Welcome in our application!</h1>
@@ -22,7 +48,7 @@
         <p class="lead">
             <a class="btn btn-primary btn-lg" href="/logout" role="button">Logout</a>
         </p>
-        </div>
+
 <div class="mx-auto" style="max-width: 700px">
         <h1>Moje samochody:</h1>
         <ul>
@@ -38,12 +64,22 @@
             <button type="submit" class="btn btn-default btn-sm">add car</button>
         </form>
 </div>
+</div>
+
+
     {% else %}
-        <div class="alert alert-warning" role="alert">
-            You are not logged in, login or register to use our portal!
-        </div>
-        <a class="btn btn-primary btn-lg" href="accounts/login" role="button">Login</a>
-        <a class="btn btn-primary btn-lg" href="register" role="button">Register</a>
+
+        <div class="jumbotron mx-auto" style="max-width: 700px">
+  <h1 class="display-4">Witaj w naszej aplikacji!</h1>
+  <p class="lead">CARry jest to aplikacja, która pomoże ci zarządzać kosztami na twoje auto.</p>
+  <hr class="my-4">
+  <p>Żeby korzystać z naszej aplikacji musisz się zalogowac, jesli nie masz jeszcze konta zarejestruj się!</p>
+          <a class="btn btn-primary btn-lg" href="accounts/login" role="button">Zaloguj</a>
+        <a class="btn btn-primary btn-lg" href="register" role="button">Zarejestruj</a>
+</div>
     {% endif %}
+
+
+
     </body>
     </html>

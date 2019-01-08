@@ -9,39 +9,57 @@
         {% bootstrap_javascript %}
 
         {# Display django.contrib.messages as Bootstrap alerts #}
-        {% bootstrap_messages %}
+                        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="B.C">{% bootstrap_messages %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css' integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU' crossorigin='anonymous'>
+        <style>
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+.bg {
+  /* The image used */
+  background-image: url("https://images.wallpaperscraft.com/image/highway_cars_city_traffic_buildings_black_white_25566_1920x1080.jpg");
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</style>
     </head>
 
-    <body>
-    <h1>Samochód: {{ car }}</h1>
-    <form action="{% url 'delete_car' %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-default btn-sm">delete car</button>
-        </form>
-    <h2>Serwisy:</h2>
-        <ul>
+    <body class="bg">
+    <div class="jumbotron mx-auto bg-white" style="width: 400px;">
+    <i class="fa fa-car" style="font-size:36px;"></i>
+    <h1 style="display:inline;">{{ car }}   </h1>
+    <h3 style="display:inline;"><span class="badge badge-danger"><a href="{% url 'delete_car' car.id %}" class="button text-dark" role="button" aria-pressed="true">Usuń</a></span></h3>
+<br>
+    <br>
+
+    <h2><i class="fas fa-cog"></i>Serwisy:</h2>
+
             {% for service in car.services.iterator %}
-                <li>
-                    <a href="{% url 'service' car.id service.id %}" style="width: 200px;" class="btn btn-primary active mx-auto" role="button" aria-pressed="true">{{ service }}</a>
-                </li>
+                    <a href="{% url 'service' car.id service.id %}" class="btn btn-primary btn-block active mx-auto" role="button" aria-pressed="true">{{ service }}</a>
             {% endfor %}
-        </ul>
-        <form action="{% url 'add_service' car.id  %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-default btn-sm">add service</button>
-        </form>
-    <h2>Tankowania:</h2>
-        <ul>
+            <a href="{% url 'add_service' car.id %}" class="btn btn-success btn-block active mx-auto" role="button" aria-pressed="true">Dodaj</a>
+    <br>
+    <h2><i class='fas fa-gas-pump' style='font-size:33px'></i>  Tankowania:</h2>
+
             {% for fuel in car.refueling.iterator %}
-                <li>
-                    <a href="{% url 'fuel' car.id fuel.id %}" style="width: 200px;" class="btn btn-primary active mx-auto" role="button" aria-pressed="true">{{ fuel }}</a>
-                </li>
+                    <a href="{% url 'fuel' car.id fuel.id %}" class="btn btn-primary btn-block active mx-auto" role="button" aria-pressed="true">{{ fuel }}</a>
             {% endfor %}
-        </ul>
-    <form action="{% url 'add_fueling' car.id  %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-default btn-sm">add fueling</button>
-        </form>
+        <a href="{% url 'add_fueling' car.id %}" class="btn btn-success btn-block active mx-auto" role="button" aria-pressed="true">Dodaj</a>
+    <br>
+    <br>
 
-
+    <a href="{% url 'report' car.id %}" class="btn btn-warning btn-block active mx-auto" role="button" aria-pressed="true">Pokaż raport</a>
+    </div>
     </body>

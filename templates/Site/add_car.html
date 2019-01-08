@@ -6,34 +6,43 @@
 
         {# Load CSS and JavaScript #}
         {% bootstrap_css %}
-        {% bootstrap_javascript %}
-
+        {% bootstrap_javascript jquery='full' %}
+        {{ form.media }}
         {# Display django.contrib.messages as Bootstrap alerts #}
         {% bootstrap_messages %}
+        <style>
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+.bg {
+  /* The image used */
+  background-image: url("https://images.wallpaperscraft.com/image/highway_cars_city_traffic_buildings_black_white_25566_1920x1080.jpg");
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</style>
     </head>
 
+    <body class="bg">
 
-    <body>
-    <h3>Add a New car</h3>
-
-    {% if error_message %}
-    <p><strong>{{ error_message }}</strong></p>
-    {% endif %}
-    <form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-        {% for field in form %}
-    <div class="form-group">
-        <div >
-            <span class="text-danger la">{{ field.errors }}</span>
-        </div>
-        <label  >{{ field.label_tag }}</label>
-        <div class="col-sm-10">{{ field }}</div>
-    </div>
-    {% endfor %}
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-success">Submit</button>
-        </div>
-    </div>
+<br>
+<div class="jumbotron mx-auto bg-white" style="width: 400px;">
+    <form method="post" class="form" >
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary btn-block">
+                Submit
+            </button>
+        {% endbuttons %}
     </form>
+</div>
     </body>
