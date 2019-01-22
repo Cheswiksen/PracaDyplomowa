@@ -6,34 +6,38 @@
 {% bootstrap_javascript %}
 
 {# Display django.contrib.messages as Bootstrap alerts #}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="B.C">
 {% bootstrap_messages %}
 {# Display a form #}
- <style>
-body, html {
-  height: 100%;
-  margin: 0;
-}
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+    }
 
-.bg {
-  /* The image used */
-  background-image: url("https://images.wallpaperscraft.com/image/highway_cars_city_traffic_buildings_black_white_25566_1920x1080.jpg");
+    .bg {
+        /* The image used */
+        background-image: url("https://images.wallpaperscraft.com/image/highway_cars_city_traffic_buildings_black_white_25566_1920x1080.jpg");
 
-  /* Full height */
-  height: 100%;
+        /* Full height */
+        height: 100%;
 
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 </style>
 <body class="bg">
 <br>
 <br>
-<div class="jumbotron mx-auto" style="width: 400px;">
-<h1 class="display-4">Logowanie</h1>
-<br>
-    <form action="{% url 'login' %}" method="post" class="form" >
+<div class="jumbotron mx-auto col-md-4 bg-white">
+    <h1 class="display-4">Logowanie</h1>
+    <br>
+    <form action="{% url 'login' %}" method="post" class="form">
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
@@ -44,6 +48,7 @@ body, html {
     </form>
 </div>
 </body>
+
 
 
 

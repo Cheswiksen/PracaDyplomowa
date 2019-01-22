@@ -1,85 +1,82 @@
-<DOCTYPE html>
-    <html lang="en">
-    <head>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
 
-        {# Load the tag library #}
-        {% load bootstrap4 %}
+    {# Load the tag library #}
+    {% load bootstrap4 %}
 
-        {# Load CSS and JavaScript #}
-        {% bootstrap_css %}
-        {% bootstrap_javascript %}
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
 
-        {# Display django.contrib.messages as Bootstrap alerts #}
-        {% bootstrap_messages %}
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
 
-                <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="B.C">
-        <style>
-body, html {
-  height: 100%;
-  margin: 0;
-}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="B.C">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
 
-.bg {
-  /* The image used */
-  background-image: url("https://images.wallpaperscraft.com/image/highway_cars_city_traffic_buildings_black_white_25566_1920x1080.jpg");
+        .bg {
+            /* The image used */
+            background-image: url("https://images.wallpaperscraft.com/image/highway_cars_city_traffic_buildings_black_white_25566_1920x1080.jpg");
 
-  /* Full height */
-  height: 100%;
+            /* Full height */
+            height: 100%;
 
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-</style>
-    </head>
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
 
-    <body class="bg">
+<body class="bg">
 
-    {% if user.is_authenticated %}
-        <div class="jumbotron mx-auto" style="max-width: 700px">
-        <h1 class="display-4">Welcome in our application!</h1>
-        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+{% if user.is_authenticated %}
+    <br>
+    <div class="jumbotron bg-white mx-auto col-md-4 col-sm-4">
+        <h1 class="display-4">Witaj w naszej aplikacji!</h1>
+        <p class="lead">CARry jest to aplikacja, która pomoże ci zarządzać kosztami na twoje auto.</p>
         <hr class="my-4">
-        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+        <p>Na tej stronie możesz zarządzać swoimi autami</p>
         <p class="lead">
-            <a class="btn btn-primary btn-lg" href="/logout" role="button">Logout</a>
+            <a class="btn btn-primary btn-lg" href="/logout" role="button">Wyloguj</a>
         </p>
+    </div>
 
-<div class="mx-auto" style="max-width: 700px">
+    <div class="jumbotron bg-white mx-auto col-md-3">
         <h1>Moje samochody:</h1>
-        <ul>
-            {% for car in Cars %}
-                {% if car.user == user %}
-                <li>
-                    <a href="{% url 'car' car.id %}" style="width: 200px;" class="btn btn-primary active mx-auto" role="button" aria-pressed="true">{{ car }}</a>
-                {% endif %}
-            {% endfor %}
-        </ul>
-        <form action="{% url 'add_car'  %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-default btn-sm">add car</button>
-        </form>
-</div>
-</div>
+        <a href="{% url 'add_car' %}" class="btn btn-success btn-block active mx-auto" role="button"
+           aria-pressed="true">dodaj samochód</a>
+        {% for car in Cars %}
+            {% if car.user == user %}
+                <a href="{% url 'car' car.id %}"
+                   class="btn btn-primary btn-block active mx-auto" role="button" aria-pressed="true">{{ car }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
 
 
-    {% else %}
 
-        <div class="jumbotron mx-auto" style="max-width: 700px">
-  <h1 class="display-4">Witaj w naszej aplikacji!</h1>
-  <p class="lead">CARry jest to aplikacja, która pomoże ci zarządzać kosztami na twoje auto.</p>
-  <hr class="my-4">
-  <p>Żeby korzystać z naszej aplikacji musisz się zalogowac, jesli nie masz jeszcze konta zarejestruj się!</p>
-          <a class="btn btn-primary btn-lg" href="accounts/login" role="button">Zaloguj</a>
+{% else %}
+
+    <div class="jumbotron mt-3 bg-white mx-auto col-md-5 col-sm-4">
+        <h1 class="display-4">Witaj w naszej aplikacji!</h1>
+        <p class="lead">CARry jest to aplikacja, która pomoże ci zarządzać kosztami na twoje auto.</p>
+        <hr class="my-4">
+        <p>Żeby korzystać z naszej aplikacji musisz się zalogowac, jesli nie masz jeszcze konta zarejestruj się!</p>
+        <a class="btn btn-primary btn-lg" href="accounts/login" role="button">Zaloguj</a>
         <a class="btn btn-primary btn-lg" href="register" role="button">Zarejestruj</a>
-</div>
-    {% endif %}
+    </div>
+{% endif %}
 
 
-
-    </body>
-    </html>
+</body>
+</html>

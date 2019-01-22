@@ -14,6 +14,24 @@ from django.utils.decorators import method_decorator
 # from main_app.tasks import add
 from bootstrap_datepicker_plus import DatePickerInput, DateTimePickerInput
 from django.shortcuts import render
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from .utils import render_to_pdf
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from weasyprint import HTML
+import tempfile
+from django.template.loader import get_template
+from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
+from django.template.loader import get_template
+from django.template import RequestContext
+from django.http import HttpResponse
+from django.conf import settings
+
+from weasyprint import HTML, CSS
 
 
 @csrf_exempt
@@ -27,7 +45,7 @@ def index(request):
 
 @csrf_exempt
 def register(request):
-    if request.method =='POST':
+    if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
@@ -38,7 +56,7 @@ def register(request):
             return redirect('index')
     else:
         form = UserCreationForm()
-    context = {'form' : form}
+    context = {'form': form}
     return render(request, 'registration/register.html', context)
 
 
@@ -57,7 +75,7 @@ def CarView(request, Car_id):
         raise Http404("no car!")
     context = {
         "car": car,
-        #"Services": Car.services()
+        # "Services": Car.services()
     }
     return render(request, "Site/car.html", context)
 
@@ -122,35 +140,11 @@ class DeleteService(DeleteView):
 
 @csrf_exempt
 def car(request):
-        context = {
-            "Services": Service.objects.all(),
-            "Cars": Car.objects.all(),
-        }
-        return render(request, 'Site/car.html', context)
-
-
-@csrf_exempt
-def report(request, Car_id):
-    try:
-        suma=0
-        sumaT=0
-        sumaS=0
-        car = Car.objects.get(pk=Car_id)
-        for n in car.services.iterator():
-            suma = suma + n.cash_float
-        sumaS = suma
-        for n in car.refueling.iterator():
-            suma = suma + n.cash_float
-        sumaT = suma - sumaS
-    except Car.DoesNotExist:
-        raise Http404("no car!")
     context = {
-        "car": car,
-        "suma": suma,
-        "tankowania": sumaT,
-        "serwisy": sumaS,
+        "Services": Service.objects.all(),
+        "Cars": Car.objects.all(),
     }
-    return render(request, 'Site/report.html', context)
+    return render(request, 'Site/car.html', context)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -161,6 +155,9 @@ class CarEntry(CreateView):
     fields = [
         'mark_text',
         'model_text',
+        'vin_text',
+        'plate_text',
+        'engine_float',
     ]
 
     def form_valid(self, form):
@@ -170,7 +167,6 @@ class CarEntry(CreateView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ServiceEntry(CreateView):
-
     model = Service
     success_url = "/"
     template_name = "Site/add_service.html"
@@ -216,3 +212,81 @@ class FuelingEntry(CreateView):
         car = Car.objects.get(pk=self.kwargs['Car_id'])
         fuel.car_set.add(car)
         return redirect(self.success_url)
+
+
+def generate_pdf(request, Car_id):
+    """Generate pdf."""
+    # Model data
+    car = Car.objects.get(pk=Car_id)
+    services = car.services.all()
+    context = {
+        "car": car,
+        "services": services,
+    }
+    # Rendered
+    html_string = render_to_string('PDFreport.html', context)
+    html = HTML(string=html_string)
+    result = html.write_pdf()
+
+    # Creating http response
+    response = HttpResponse(content_type='application/pdf;')
+    response['Content-Disposition'] = 'inline; filename=list_people.pdf'
+    response['Content-Transfer-Encoding'] = 'binary'
+
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(result)
+        output.flush()
+        output.seek(0)
+        response.write(output.read())
+
+    return response
+
+
+@csrf_exempt
+def report(request, Car_id):
+    try:
+        procentT = 0
+        procentS = 0
+        i = 0
+        q = 0
+        srednia_spalania = 0
+        srednia_cena = 0
+        suma = 0
+        sumaT = 0
+        sumaS = 0
+        litry = 0
+        car = Car.objects.get(pk=Car_id)
+        for n in car.services.iterator():
+            suma = suma + n.cash_float
+        sumaS = suma
+        for n in car.refueling.iterator():
+            q = q + 1
+            if i == 0:
+                przebieg1 = n.mileage_number
+                i = i + 1
+            przebieg2 = n.mileage_number
+            litry = litry + n.liters_float
+            suma = suma + n.cash_float
+            srednia_cena = srednia_cena + (n.cash_float / n.liters_float)
+        if q != 0:
+            srednia_cena = srednia_cena / q
+            srednia_cena = round(srednia_cena, 2)
+            if (przebieg1 - przebieg2) != 0:
+                srednia_spalania = (litry / (przebieg1 - przebieg2)) * 100
+                srednia_spalania = round(srednia_spalania, 2)
+        sumaT = suma - sumaS
+        procentT = sumaT
+        procentS = sumaS
+    except Car.DoesNotExist:
+        raise Http404("no car!")
+    context = {
+        "car": car,
+        "suma": suma,
+        "tankowania": sumaT,
+        "serwisy": sumaS,
+        "srednia": srednia_spalania,
+        "procentT": procentT,
+        "procentS": procentS,
+        "cena": srednia_cena,
+    }
+    return render(request, 'Site/report.html', context)

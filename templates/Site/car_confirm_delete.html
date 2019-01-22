@@ -1,18 +1,19 @@
-<DOCTYPE html>
-    <html lang="en">
-    <head>
-        {# Load the tag library #}
-        {% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {# Load the tag library #}
+    {% load bootstrap4 %}
 
-        {# Load CSS and JavaScript #}
-        {% bootstrap_css %}
-        {% bootstrap_javascript %}
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
 
-        {# Display django.contrib.messages as Bootstrap alerts #}
-        {% bootstrap_messages %}
-    </head>
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+</head>
 
 <form method="post">{% csrf_token %}
     <p>Are you sure you want to delete "{{ object }}"?</p>
     <input type="submit" value="Confirm">
 </form>
+</html>

@@ -1,65 +1,114 @@
-<DOCTYPE html>
-    <html lang="en">
-    <head>
-        {# Load the tag library #}
-        {% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {# Load the tag library #}
+    {% load bootstrap4 %}
 
-        {# Load CSS and JavaScript #}
-        {% bootstrap_css %}
-        {% bootstrap_javascript %}
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
 
-        {# Display django.contrib.messages as Bootstrap alerts #}
-                        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="B.C">{% bootstrap_messages %}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css' integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU' crossorigin='anonymous'>
-        <style>
-body, html {
-  height: 100%;
-  margin: 0;
-}
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="B.C">
+    {% bootstrap_messages %}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css'
+          integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU'
+          crossorigin='anonymous'>
 
-.bg {
-  /* The image used */
-  background-image: url("https://images.wallpaperscraft.com/image/highway_cars_city_traffic_buildings_black_white_25566_1920x1080.jpg");
+    <style>
 
-  /* Full height */
-  height: 100%;
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
 
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-</style>
-    </head>
+        .container {
 
-    <body class="bg">
-    <div class="jumbotron mx-auto bg-white" style="width: 400px;">
-    <i class="fa fa-car" style="font-size:36px;"></i>
-    <h1 style="display:inline;">{{ car }}   </h1>
-    <h3 style="display:inline;"><span class="badge badge-danger"><a href="{% url 'delete_car' car.id %}" class="button text-dark" role="button" aria-pressed="true">Usuń</a></span></h3>
-<br>
-    <br>
+        }
 
-    <h2><i class="fas fa-cog"></i>Serwisy:</h2>
+        .bg {
+            /* The image used */
+            background-image: url("https://images.wallpaperscraft.com/image/highway_cars_city_traffic_buildings_black_white_25566_1920x1080.jpg");
 
-            {% for service in car.services.iterator %}
-                    <a href="{% url 'service' car.id service.id %}" class="btn btn-primary btn-block active mx-auto" role="button" aria-pressed="true">{{ service }}</a>
-            {% endfor %}
-            <a href="{% url 'add_service' car.id %}" class="btn btn-success btn-block active mx-auto" role="button" aria-pressed="true">Dodaj</a>
-    <br>
-    <h2><i class='fas fa-gas-pump' style='font-size:33px'></i>  Tankowania:</h2>
+            /* Full height */
+            height: 100%;
 
-            {% for fuel in car.refueling.iterator %}
-                    <a href="{% url 'fuel' car.id fuel.id %}" class="btn btn-primary btn-block active mx-auto" role="button" aria-pressed="true">{{ fuel }}</a>
-            {% endfor %}
-        <a href="{% url 'add_fueling' car.id %}" class="btn btn-success btn-block active mx-auto" role="button" aria-pressed="true">Dodaj</a>
-    <br>
-    <br>
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+    </style>
+</head>
 
-    <a href="{% url 'report' car.id %}" class="btn btn-warning btn-block active mx-auto" role="button" aria-pressed="true">Pokaż raport</a>
+<body class="bg">
+
+<main>
+
+    <div class="container">
+
+        <header>
+            <div class="jumbotron p-3 mt-3 bg-white mx-auto col-sm-6 col-md-5">
+                <i class="fa fa-car" style="font-size:36px;"></i>
+                <h1 style="display:inline;">{{ car }}   </h1>
+                <h3 style="display:inline;"><span class="badge badge-danger"><a href="{% url 'delete_car' car.id %}"
+                                                                                class="button text-dark"
+                                                                                role="button"
+                                                                                aria-pressed="true">Usuń</a></span>
+                </h3>
+                <br><br>
+                <h2>VIN: {{ car.vin_text }}</h2>
+                <h2>Tablica: {{ car.plate_text }}</h2>
+                <h2>Poj. silnika: {{ car.engine_float }} cm<sup>3</sup></h2>
+                <br>
+                <a href="{% url 'report' car.id %}" class="btn btn-warning btn-block active mx-auto" role="button"
+                   aria-pressed="true">Pokaż raport</a>
+            </div>
+        </header>
+
+        <div class="row">
+
+            <div class="jumbotron p-3 bg-white col-sm-4 offset-md-1 offset-sm-1">
+
+                <h2><i class="fas fa-cog"></i> Serwisy:</h2><br>
+                <a href="{% url 'add_service' car.id %}" class="btn btn-success btn-block active mx-auto"
+                   role="button" aria-pressed="true">Dodaj</a>
+                {% for service in car.services.iterator %}
+                    <a href="{% url 'service' car.id service.id %}"
+                       class="btn btn-sm btn-primary btn-block active mx-auto" role="button"
+                       aria-pressed="true">{{ service }}</a>
+                {% endfor %}
+
+
+            </div>
+
+            <div class="jumbotron p-3 bg-white col-sm-4 offset-md-2 offset-sm-2">
+
+
+                <h2><i class='fas fa-gas-pump' style='font-size:33px'></i> Tankowania:</h2><br>
+                <a href="{% url 'add_fueling' car.id %}" class="btn btn-success btn-block active mx-auto"
+                   role="button" aria-pressed="true">Dodaj</a>
+                {% for fuel in car.refueling.iterator %}
+                    <a href="{% url 'fuel' car.id fuel.id %}"
+                       class="btn btn-sm btn-primary btn-block active mx-auto" role="button"
+                       aria-pressed="true">{{ fuel }}</a>
+                {% endfor %}
+
+
+            </div>
+
+        </div>
+
     </div>
-    </body>
+
+
+</main>
+
+</body>
+</html>
